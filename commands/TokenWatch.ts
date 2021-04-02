@@ -45,7 +45,8 @@ export default class TokenWatch extends BaseCommand {
     })
     for (const resItem of data.result) {
       // console.log(resItem)
-      const item = await Redis.get(`${resItem.hash}`)
+      // const item = await Redis.get(`${resItem.hash}`)
+      const item = null
       if (!item) {
         resItem.type = null
         const v = resItem.value
@@ -61,7 +62,7 @@ export default class TokenWatch extends BaseCommand {
         if (resItem.type !== null && new Decimal(resItem.humanValue).greaterThanOrEqualTo(cond)) {
           console.log('pushMessage', resItem)
           messages.push(
-            `${resItem === 'SELL' ? '🔴' : '🟢'} Quantity >= ${cond}, сумма ${Math.round(
+            `${resItem.type === 'SELL' ? '🔴' : '🟢'} Quantity >= ${cond}, сумма ${Math.round(
               resItem.humanValue
             )} <a href="https://bscscan.com/tx/${resItem.hash}">Открыть</a>`
           )
