@@ -38,7 +38,7 @@ export default class TokenWatch extends BaseCommand {
         action: 'tokentx',
         contractaddress: '0x6f695bd5ffd25149176629f8491a5099426ce7a7',
         page: 1,
-        offset: 10,
+        offset: 20,
         sort: 'desc',
         apikey: '2F28CTPNMTBJZT7G55RGTW8WJEGF4MEV31',
       },
