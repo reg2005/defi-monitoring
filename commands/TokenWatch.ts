@@ -45,8 +45,8 @@ export default class TokenWatch extends BaseCommand {
     })
     for (const resItem of data.result) {
       // console.log(resItem)
-      // const item = await Redis.get(`${resItem.hash}`)
-      const item = null
+      const item = await Redis.get(`${resItem.hash}`)
+      // const item = null
       if (!item) {
         resItem.type = null
         const v = resItem.value
