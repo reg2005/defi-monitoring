@@ -10,6 +10,7 @@
     "App": "app",
     "Config": "config",
     "Database": "database",
+    "LibsTs": "libsTs",
     "Contracts": "contracts"
   },
   "preloads": [
