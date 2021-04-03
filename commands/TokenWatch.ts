@@ -2,6 +2,7 @@ import { BaseCommand } from '@adonisjs/core/build/standalone'
 import axios from 'axios'
 import Redis from '@ioc:Adonis/Addons/Redis'
 import Decimal from 'decimal.js'
+import Logger from '@ioc:Adonis/Core/Logger'
 import { TGSendMessage } from 'App/Services/Telegram'
 import { sleep } from 'App/Services/utils'
 export default class TokenWatch extends BaseCommand {
@@ -21,8 +22,12 @@ export default class TokenWatch extends BaseCommand {
   public async run() {
     let i = 1
     for (;;) {
-      console.log(`${i} iteration`)
-      await this.runHelper()
+      Logger.info(`${i} iteration`)
+      try {
+        await this.runHelper()
+      } catch (error) {
+        Logger.error(error)
+      }
       await sleep('500ms')
       i++
     }
@@ -60,7 +65,7 @@ export default class TokenWatch extends BaseCommand {
         }
 
         if (resItem.type !== null && new Decimal(resItem.humanValue).greaterThanOrEqualTo(cond)) {
-          console.log('pushMessage', resItem)
+          Logger.info('addMessage for ' + resItem.hash)
           messages.push(
             `${resItem.type === 'SELL' ? '🔴' : '🟢'} Quantity >= ${cond}, сумма ${Math.round(
               resItem.humanValue

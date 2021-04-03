@@ -148,6 +148,7 @@ export const logger: LoggerConfig = {
   |
   */
   name: Env.get('APP_NAME'),
+  timestamp: 'iso',
 
   /*
   |--------------------------------------------------------------------------
