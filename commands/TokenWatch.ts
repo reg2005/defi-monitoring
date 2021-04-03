@@ -81,17 +81,18 @@ export default class TokenWatch extends BaseCommand {
               v.length - parseInt(resItem.tokenDecimal)
             )}`
           )
-          const txInfo = await getTXInfo(resItem.hash)
+          let type: null | 'BUY' | 'SELL' = null
+          if (resItem.from.toLowerCase() === ownerAddress) {
+            type = 'BUY'
+          } else if (resItem.to.toLowerCase() === ownerAddress) {
+            type = 'SELL'
+          }
+          const txInfo = await getTXInfo(resItem.hash, type)
           const item: BSCExtendedTokenOneItemInterface = {
-            type: null,
+            type,
             ...resItem,
             humanValue,
             ...txInfo,
-          }
-          if (resItem.from.toLowerCase() === ownerAddress) {
-            item.type = 'BUY'
-          } else if (resItem.to.toLowerCase() === ownerAddress) {
-            item.type = 'SELL'
           }
 
           if (item.type !== null && new Decimal(item.humanValue).greaterThanOrEqualTo(cond)) {
@@ -99,9 +100,9 @@ export default class TokenWatch extends BaseCommand {
             messages.push(
               `${item.type === 'SELL' ? '🔴' : '🟢'} ${resItem.tokenSymbol} ${Math.round(
                 item.humanValue
-              )} >= ${cond}, цена $${item.priceInUSD}  <a href="https://bscscan.com/tx/${
-                resItem.hash
-              }">Транзакция</a>`
+              )} >= ${cond} \n $${item.priceInUSD} \n ${item.pairPrice} \n ${
+                item.pairName
+              } <a href="https://bscscan.com/tx/${resItem.hash}">Транзакция</a>`
             )
           }
           await Redis.set(`${item.hash}`, JSON.stringify(item))

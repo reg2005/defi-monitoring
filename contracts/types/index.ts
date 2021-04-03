@@ -19,11 +19,17 @@ interface BSCResultTokenOneItemInterface {
   input: string
   confirmations: string
 }
-
+export interface DataItemInterface {
+  price: string | null
+  name: string | null
+}
 export interface BSCExtendedTokenOneItemInterface extends BSCResultTokenOneItemInterface {
   type: 'SELL' | 'BUY' | null
   humanValue: number
   priceInUSD: number | null
+  data: DataItemInterface[]
+  pairPrice: string
+  pairName: string
 }
 
 export interface BSCTokenResponse200Interface {
@@ -35,3 +41,4 @@ export interface TokenConfigItem {
   eventIfGreater: number
 }
 export type TokenConfigs = TokenConfigItem[]
+export type TypeTypes = 'BUY' | 'SELL' | null
